@@ -1,0 +1,35 @@
+
+header;
+start_time = 0;
+end_time = 0;
+
+for i = 1 : length(gestures)
+   
+    lane_data = car_data{gestures{i,1},gestures{i,2}};
+    for j = 1 : height(lane_data)
+        
+        if lane_data{j,1} >= gestures{i,6} - 50 ...
+                && lane_data{j,1} <= gestures{i,6} + 50 ...
+                && 0 == start_time
+            %fprintf('i %f j %f\n', i, j);
+            start_time = j;
+            break;
+        end
+    end
+    
+    for j = start_time + 1 : height(lane_data)
+        if lane_data{j,1} >= (gestures{i,6} + gestures{i,7} - 50) ...
+                && lane_data{j,1} <= (gestures{i,6} + gestures{i,7} + 50) ...
+                && 0 == end_time
+            %fprintf('i %f j %f\n', i, j);
+            end_time = j;
+            break;
+        end
+    end
+    
+    fprintf('i %f j %f start index %f end index %f\n', i, j, start_time, end_time);
+    gestures(i,10) = {rmse(lane_data{start_time:end_time, 2}, zeros(end_time - start_time + 1, 1))};
+    %gestures(i,11) = {std(lane_data{start_time:end_time,2})};
+    start_time = 0;
+    end_time = 0;
+end

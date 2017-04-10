@@ -1,0 +1,294 @@
+clear all;
+
+% import training gaze data
+pilot_gaze_data = cell(6,1);
+
+% import Graham Wilson 1
+fileName = '/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Data/Pilot/2017_02_21-11_23_59_Graham/webcamData_p1_0_p_gaze.txt';                
+formatSpec = '%f%f%f%f%f%f%f%f%f%f';
+pilot_gaze_data{1,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
+pilot_gaze_data{1,1} = {pilot_gaze_data{1,1}(:,:), zeros(length(pilot_gaze_data{1,1}{:,1}),1)};
+
+% manually classify Graham Wilson #1 
+pilot_gaze_data{1,1}(1:85,11) = {1};
+pilot_gaze_data{1,1}(86:112,11) = {0};
+pilot_gaze_data{1,1}(113:320,11) = {1};
+pilot_gaze_data{1,1}(321:388,11) = {0};
+pilot_gaze_data{1,1}(389:805,11) = {1};
+pilot_gaze_data{1,1}(806:817,11) = {0};
+pilot_gaze_data{1,1}(818:842,11) = {1};
+pilot_gaze_data{1,1}(843:922,11) = {0};
+pilot_gaze_data{1,1}(923:955,11) = {1};
+pilot_gaze_data{1,1}(956:1009,11) = {0};
+pilot_gaze_data{1,1}(1010:1027,11) = {1};
+pilot_gaze_data{1,1}(1028:1096,11) = {0};
+pilot_gaze_data{1,1}(1097:1428,11) = {1};
+pilot_gaze_data{1,1}(1429:1493,11) = {0};
+pilot_gaze_data{1,1}(1494:1605,11) = {1};
+pilot_gaze_data{1,1}(1606:1670,11) = {0};
+pilot_gaze_data{1,1}(1671:1757,11) = {1};
+pilot_gaze_data{1,1}(1758:1778,11) = {0};
+pilot_gaze_data{1,1}(1779:1904,11) = {1};
+pilot_gaze_data{1,1}(1905:1950,11) = {0};
+pilot_gaze_data{1,1}(1951:1984,11) = {1};
+pilot_gaze_data{1,1}(1985:1997,11) = {0};
+pilot_gaze_data{1,1}(1998:2053,11) = {1};
+pilot_gaze_data{1,1}(1054:2114,11) = {0};
+pilot_gaze_data{1,1}(2115:2741,11) = {1};
+pilot_gaze_data{1,1}(2742:2757,11) = {0};
+pilot_gaze_data{1,1}(2758:2817,11) = {1};
+pilot_gaze_data{1,1}(2818:end,11) = {0};
+
+% import Graham Wilson 2
+formatSpec = '%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f';
+fileName = '/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Data/Pilot/2017_02_21-11_33_14_Graham/webcamData_p1_1_p_gaze.txt';                
+pilot_gaze_data{2,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
+
+% manually classify Graham Wilson #2
+pilot_gaze_data{2,1}(1:333,17) = {1};
+pilot_gaze_data{2,1}(334:358,17) = {0};
+pilot_gaze_data{2,1}(359:850,17) = {1};
+pilot_gaze_data{2,1}(851:876,17) = {0};
+pilot_gaze_data{2,1}(877:2001,17) = {1};
+pilot_gaze_data{2,1}(2002:2023,17) = {0};
+pilot_gaze_data{2,1}(2024:2648,17) = {1};
+pilot_gaze_data{2,1}(2649:2664,17) = {0};
+pilot_gaze_data{2,1}(2665:3011,17) = {1};
+pilot_gaze_data{2,1}(3012:3081,17) = {0};
+pilot_gaze_data{2,1}(3082:3369,17) = {1};
+pilot_gaze_data{2,1}(3370:3379,17) = {0};
+pilot_gaze_data{2,1}(3380:end,17) = {1};
+
+% import Graham Wilson #3
+fileName = '/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Data/Pilot/2017_02_21-11_43_22_Graham/webcamData_p1_3_p_gaze.txt';                
+pilot_gaze_data{3,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
+
+% manually classify Graham Wilson #3
+pilot_gaze_data{3,1}(1:554,17) = {1};
+pilot_gaze_data{3,1}(555:573,17) = {0};
+pilot_gaze_data{3,1}(574:939,17) = {1};
+pilot_gaze_data{3,1}(940:967,17) = {0};
+pilot_gaze_data{3,1}(968:1287,17) = {1};
+pilot_gaze_data{3,1}(1288:1303,17) = {0};
+pilot_gaze_data{3,1}(1304:1326,17) = {1};
+pilot_gaze_data{3,1}(1327:1339,17) = {0};
+pilot_gaze_data{3,1}(1340:1431,17) = {1};
+pilot_gaze_data{3,1}(1432:1446,17) = {0};
+pilot_gaze_data{3,1}(1447:2028,17) = {1};
+pilot_gaze_data{3,1}(2029:2039,17) = {0};
+pilot_gaze_data{3,1}(2040:2238,17) = {1};
+pilot_gaze_data{3,1}(2239:2259,17) = {0};
+pilot_gaze_data{3,1}(2260:2749,17) = {1};
+pilot_gaze_data{3,1}(2750:2762,17) = {0};
+pilot_gaze_data{3,1}(2763:3139,17) = {1};
+pilot_gaze_data{3,1}(3140:3150,17) = {0};
+pilot_gaze_data{3,1}(3151:3467,17) = {1};
+pilot_gaze_data{3,1}(3468:3483,17) = {0};
+pilot_gaze_data{3,1}(3484:end,17) = {1};
+
+% import John Williamson #1
+fileName = '/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Data/Pilot/2017_02_22-15_06_48_John/webcamData_p1_0_gaze.txt';                
+pilot_gaze_data{4,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
+
+% manually classify John Williamson #1
+pilot_gaze_data{4,1}(:,17) = {0};
+% pilot_gaze_data{4,1}(1:554,17) = {1};
+
+% import John Williamson #2
+fileName = '/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Data/Pilot/2017_02_22-15_12_53_John/webcamData_p1_1_p_gaze.txt';                
+pilot_gaze_data{5,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
+
+% manually classify John Williamson #2
+pilot_gaze_data{5,1}(:,17) = {0};
+pilot_gaze_data{5,1}(1:1139,17) = {1};
+pilot_gaze_data{5,1}(1168:1233,17) = {1};
+pilot_gaze_data{5,1}(1255:1391,17) = {1};
+pilot_gaze_data{5,1}(1416:1667,17) = {1};
+pilot_gaze_data{5,1}(1689:2054,17) = {1};
+pilot_gaze_data{5,1}(2073:2336,17) = {1};
+pilot_gaze_data{5,1}(2345:2531,17) = {1};
+pilot_gaze_data{5,1}(2548:2802,17) = {1};
+pilot_gaze_data{5,1}(2832:2916,17) = {1};
+pilot_gaze_data{5,1}(2997:3061,17) = {1};
+pilot_gaze_data{5,1}(3068:3089,17) = {1};
+pilot_gaze_data{5,1}(3135:3148,17) = {1};
+pilot_gaze_data{5,1}(3173:3262,17) = {1};
+pilot_gaze_data{5,1}(3320:3326,17) = {1};
+pilot_gaze_data{5,1}(3337:3406,17) = {1};
+pilot_gaze_data{5,1}(3450:3468,17) = {1};
+pilot_gaze_data{5,1}(3486:3766,17) = {1};
+pilot_gaze_data{5,1}(3781:3795,17) = {1};
+pilot_gaze_data{5,1}(3806:4391,17) = {1};
+pilot_gaze_data{5,1}(4406:4456,17) = {1};
+pilot_gaze_data{5,1}(4482:4740,17) = {1};
+pilot_gaze_data{5,1}(4751:4872,17) = {1};
+pilot_gaze_data{5,1}(4935:4961,17) = {1};
+pilot_gaze_data{5,1}(4992:5012,17) = {1};
+pilot_gaze_data{5,1}(5040:5054,17) = {1};
+pilot_gaze_data{5,1}(5121:5180,17) = {1};
+pilot_gaze_data{5,1}(5210:5224,17) = {1};
+pilot_gaze_data{5,1}(5241:5251,17) = {1};
+pilot_gaze_data{5,1}(5311:5467,17) = {1};
+pilot_gaze_data{5,1}(5476:6203,17) = {1};
+pilot_gaze_data{5,1}(6225:6245,17) = {1};
+pilot_gaze_data{5,1}(6260:6273,17) = {1};
+pilot_gaze_data{5,1}(6308:6322,17) = {1};
+pilot_gaze_data{5,1}(6343:6356,17) = {1};
+pilot_gaze_data{5,1}(6372:6384,17) = {1};
+pilot_gaze_data{5,1}(6397:6411,17) = {1};
+pilot_gaze_data{5,1}(6471:6487,17) = {1};
+pilot_gaze_data{5,1}(6497:6511,17) = {1};
+pilot_gaze_data{5,1}(6535:6653,17) = {1};
+pilot_gaze_data{5,1}(6678:6708,17) = {1};
+pilot_gaze_data{5,1}(6771:6780,17) = {1};
+pilot_gaze_data{5,1}(6829:6894,17) = {1};
+pilot_gaze_data{5,1}(6908:6962,17) = {1};
+pilot_gaze_data{5,1}(6974:6981,17) = {1};
+pilot_gaze_data{5,1}(6999:7144,17) = {1};
+pilot_gaze_data{5,1}(7182:7194,17) = {1};
+pilot_gaze_data{5,1}(7212:7268,17) = {1};
+pilot_gaze_data{5,1}(7285:7416,17) = {1};
+pilot_gaze_data{5,1}(7444:7468,17) = {1};
+pilot_gaze_data{5,1}(7488:7515,17) = {1};
+pilot_gaze_data{5,1}(7535:7624,17) = {1};
+pilot_gaze_data{5,1}(7649:7929,17) = {1};
+pilot_gaze_data{5,1}(7971:8036,17) = {1};
+pilot_gaze_data{5,1}(8050:8098,17) = {1};
+pilot_gaze_data{5,1}(8127:8217,17) = {1};
+pilot_gaze_data{5,1}(8239:8398,17) = {1};
+pilot_gaze_data{5,1}(8411:8430,17) = {1};
+pilot_gaze_data{5,1}(8449:8565,17) = {1};
+pilot_gaze_data{5,1}(8584:9032,17) = {1};
+pilot_gaze_data{5,1}(9051:9251,17) = {1};
+pilot_gaze_data{5,1}(9272:9396,17) = {1};
+pilot_gaze_data{5,1}(9417:9426,17) = {1};
+pilot_gaze_data{5,1}(9463:9489,17) = {1};
+pilot_gaze_data{5,1}(9500:9980,17) = {1};
+pilot_gaze_data{5,1}(9993:10025,17) = {1};
+pilot_gaze_data{5,1}(10037:10094,17) = {1};
+pilot_gaze_data{5,1}(10104:10647,17) = {1};
+pilot_gaze_data{5,1}(10658:10827,17) = {1};
+pilot_gaze_data{5,1}(10836:11375,17) = {1};
+pilot_gaze_data{5,1}(11394:11534,17) = {1};
+pilot_gaze_data{5,1}(11546:11583,17) = {1};
+pilot_gaze_data{5,1}(11607:11619,17) = {1};
+pilot_gaze_data{5,1}(11641:11651,17) = {1};
+pilot_gaze_data{5,1}(11658:11711,17) = {1};
+pilot_gaze_data{5,1}(11795:12102,17) = {1};
+pilot_gaze_data{5,1}(12120:12271,17) = {1};
+%pilot_gaze_data{5,1}(12299:,17) = {1};
+
+% import Euan Freeman #1
+fileName = '/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Data/Pilot/2017_02_23-09_49_29_Euan/webcamData_p1_0_p_gaze.txt';                
+pilot_gaze_data{6,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
+
+pilot_gaze_data{6,1}(:,17) = {0};
+% manually classify Euan Freeman #1
+pilot_gaze_data{6,1}(1:78,17) = {1};
+pilot_gaze_data{6,1}(79:84,17) = {0};
+pilot_gaze_data{6,1}(85:91,17) = {1};
+pilot_gaze_data{6,1}(92:110,17) = {0};
+pilot_gaze_data{6,1}(111:239,17) = {1};
+pilot_gaze_data{6,1}(240:278,17) = {0};
+pilot_gaze_data{6,1}(279:597,17) = {1};
+pilot_gaze_data{6,1}(598:611,17) = {0};
+pilot_gaze_data{6,1}(612:625,17) = {1};
+pilot_gaze_data{6,1}(626:638,17) = {0};
+pilot_gaze_data{6,1}(639:662,17) = {1};
+pilot_gaze_data{6,1}(663:695,17) = {0};
+pilot_gaze_data{6,1}(696:725,17) = {1};
+pilot_gaze_data{6,1}(726:777,17) = {0};
+pilot_gaze_data{6,1}(778:783,17) = {1};
+pilot_gaze_data{6,1}(784:799,17) = {0};
+pilot_gaze_data{6,1}(800:824,17) = {1};
+pilot_gaze_data{6,1}(853:869,17) = {1};
+pilot_gaze_data{6,1}(944:959,17) = {1};
+pilot_gaze_data{6,1}(1134:1146,17) = {1};
+pilot_gaze_data{6,1}(1294:1309,17) = {1};
+pilot_gaze_data{6,1}(1333:1348,17) = {1};
+pilot_gaze_data{6,1}(1358:1418,17) = {1};
+pilot_gaze_data{6,1}(1454:1465,17) = {1};
+pilot_gaze_data{6,1}(1480:1531,17) = {1};
+pilot_gaze_data{6,1}(1560:1661,17) = {1};
+pilot_gaze_data{6,1}(1677:1786,17) = {1};
+pilot_gaze_data{6,1}(1833:1965,17) = {1};
+pilot_gaze_data{6,1}(1974:1987,17) = {1};
+pilot_gaze_data{6,1}(2004:2180,17) = {1};
+pilot_gaze_data{6,1}(2238:2345,17) = {1};
+pilot_gaze_data{6,1}(2359:2566,17) = {1};
+pilot_gaze_data{6,1}(2606:2859,17) = {1};
+pilot_gaze_data{6,1}(2892:2931,17) = {1};
+pilot_gaze_data{6,1}(2940:2983,17) = {1};
+pilot_gaze_data{6,1}(3004:3055,17) = {1};
+pilot_gaze_data{6,1}(3067:3236,17) = {1};
+pilot_gaze_data{6,1}(3359:3515,17) = {1};
+pilot_gaze_data{6,1}(3537:3579,17) = {1};
+pilot_gaze_data{6,1}(3584:3620,17) = {1};
+pilot_gaze_data{6,1}(3636:3810,17) = {1};
+pilot_gaze_data{6,1}(3820:3996,17) = {1};
+pilot_gaze_data{6,1}(4015:4058,17) = {1};
+pilot_gaze_data{6,1}(4091:4209,17) = {1};
+pilot_gaze_data{6,1}(4218:4273,17) = {1};
+pilot_gaze_data{6,1}(4284:4418,17) = {1};
+pilot_gaze_data{6,1}(4445:4740,17) = {1};
+pilot_gaze_data{6,1}(4767:5244,17) = {1};
+pilot_gaze_data{6,1}(5252:5344,17) = {1};
+pilot_gaze_data{6,1}(5354:5636,17) = {1};
+pilot_gaze_data{6,1}(5647:5802,17) = {1};
+pilot_gaze_data{6,1}(5811:6214,17) = {1};
+pilot_gaze_data{6,1}(6223:6267,17) = {1};
+pilot_gaze_data{6,1}(6312:6325,17) = {1};
+pilot_gaze_data{6,1}(6362:6442,17) = {1};
+pilot_gaze_data{6,1}(6476:6482,17) = {1};
+pilot_gaze_data{6,1}(6529:6547,17) = {1};
+pilot_gaze_data{6,1}(6565:6584,17) = {1};
+pilot_gaze_data{6,1}(6618:6635,17) = {1};
+pilot_gaze_data{6,1}(6660:6691,17) = {1};
+pilot_gaze_data{6,1}(6742:6743,17) = {1};
+pilot_gaze_data{6,1}(6751:6772,17) = {1};
+pilot_gaze_data{6,1}(6794:7159,17) = {1};
+pilot_gaze_data{6,1}(7166:7270,17) = {1};
+pilot_gaze_data{6,1}(7291:7409,17) = {1};
+pilot_gaze_data{6,1}(7416:7454,17) = {1};
+pilot_gaze_data{6,1}(7469:7515,17) = {1};
+pilot_gaze_data{6,1}(7540:7640,17) = {1};
+pilot_gaze_data{6,1}(7669:7701,17) = {1};
+pilot_gaze_data{6,1}(7783:7800,17) = {1};
+pilot_gaze_data{6,1}(7826:7885,17) = {1};
+pilot_gaze_data{6,1}(7903:8094,17) = {1};
+pilot_gaze_data{6,1}(8104:8229,17) = {1};
+pilot_gaze_data{6,1}(8237:8466,17) = {1};
+pilot_gaze_data{6,1}(8486:8499,17) = {1};
+pilot_gaze_data{6,1}(8509:8579,17) = {1};
+pilot_gaze_data{6,1}(8608:8757,17) = {1};
+pilot_gaze_data{6,1}(8764:8833,17) = {1};
+pilot_gaze_data{6,1}(8842:8855,17) = {1};
+pilot_gaze_data{6,1}(8866:8935,17) = {1};
+pilot_gaze_data{6,1}(8953:9131,17) = {1};
+pilot_gaze_data{6,1}(9140:9185,17) = {1};
+pilot_gaze_data{6,1}(9193:9200,17) = {1};
+pilot_gaze_data{6,1}(9228:9256,17) = {1};
+pilot_gaze_data{6,1}(9273:9326,17) = {1};
+pilot_gaze_data{6,1}(9360:9482,17) = {1};
+pilot_gaze_data{6,1}(9489:9585,17) = {1};
+pilot_gaze_data{6,1}(9592:9604,17) = {1};
+pilot_gaze_data{6,1}(9613:9640,17) = {1};
+pilot_gaze_data{6,1}(9657:9673,17) = {1};
+pilot_gaze_data{6,1}(9699:9731,17) = {1};
+pilot_gaze_data{6,1}(9776:9788,17) = {1};
+pilot_gaze_data{6,1}(9831:9851,17) = {1};
+pilot_gaze_data{6,1}(9874:9962,17) = {1};
+pilot_gaze_data{6,1}(9976:9984,17) = {1};
+pilot_gaze_data{6,1}(10010:10053,17) = {1};
+pilot_gaze_data{6,1}(10067:10270,17) = {1};
+pilot_gaze_data{6,1}(10290:10468,17) = {1};
+pilot_gaze_data{6,1}(10476:10494,17) = {1};
+pilot_gaze_data{6,1}(10534:10559,17) = {1};
+pilot_gaze_data{6,1}(10566:10807,17) = {1};
+pilot_gaze_data{6,1}(10894:11238,17) = {1};
+pilot_gaze_data{6,1}(11247:11301,17) = {1};
+pilot_gaze_data{6,1}(11309:12760,17) = {1};
+pilot_gaze_data{6,1}(12773:end,17) = {1};
+
+
+save('pilot_gaze_data.mat', 'pilot_gaze_data');
