@@ -3,9 +3,12 @@ header;
 % make sure extract_gestures_data.m was run before the execution of this
 % script! 
 
-index = 1;
+index = 1; 
+duration = 10;  % 20 lines of the capacitive data file are the equivalent of 
+                % ~ 500 ms; 10 lines of output are ~250 ms
+gestures_data(:,9) = [];
 
-for i = 3 : 3 %NO_PARTICIPANTS
+for i = 1 : NO_PARTICIPANTS
    
     % skipping participant 2 
     if 2 == i
@@ -13,42 +16,43 @@ for i = 3 : 3 %NO_PARTICIPANTS
     end
     
     for j = 1 : NO_CONDITIONS
-        
+
         cap_data = capacitive_data{i,j};
         
-        while index <= length(gestures_data) - 3
+        
+        while index <= (length(gestures_data) - 3)
             
-            start_index = find(cap_data{:,2} <= CAPACITIVE_THRESHOLD & ...
-                cap_data{:,1}  >= gestures_data{index,5}, 1, 'first');
+            start_index = 1;
             
-%             while ~(cap_data{start_index - 1,2} > CAPACITIVE_THRESHOLD & ...
-%                     cap_data{start_index + 1,2} > CAPACITIVE_THRESHOLD)
-%                
-%                 fprintf('old start index %f ', start_index);
-%                 start_index = start_index + 1;
-%                 fprintf('new start index %f\n', start_index);
-%             end
-            
-            end_index = find(cap_data{start_index + 1:end,2} >= CAPACITIVE_THRESHOLD & ...
-                cap_data{start_index + 1:end,1}  > gestures_data{index,5} & ...
-                cap_data{start_index + 1:end,1}  <= gestures_data{index+1,5}, 1, 'first');
-            
-            end_index = end_index + start_index + 1;
-            
-%             while 500 > (cap_data{end_index,1} - cap_data{start_index,1})
-%                 
-%                 old_end_index = end_index;
-%                 fprintf('current duration: %f ', cap_data{end_index,1} - cap_data{start_index,1});
-%                 end_index = find(cap_data{old_end_index:end,2} >= CAPACITIVE_THRESHOLD & ...
-%                     cap_data{old_end_index:end,1}  > gestures_data{index,5} & ...
-%                     cap_data{old_end_index:end,1}  <= gestures_data{index+1,5}, 1, 'first');
-%                 
-%                 end_index = end_index + old_end_index;
-%                 fprintf('new duration: %f\n', cap_data{end_index,1} - cap_data{start_index,1});
-%             end
-            
+            % find correct start index for hand off wheel 
+            while CAPACITIVE_THRESHOLD < median(cap_data{start_index:start_index + duration,2})
+
+                old_start_index = start_index;
+                start_index = find(cap_data{old_start_index + 1:end,2} <= CAPACITIVE_THRESHOLD & ...
+                cap_data{old_start_index + 1:end,1}  >= gestures_data{index,5}, 1, 'first');
+
+                start_index = old_start_index + start_index;
+            end
+
+            % find correct end index hand off wheel 
+            end_index = start_index;
+            while CAPACITIVE_THRESHOLD > median(cap_data{end_index:end_index + duration,2})
+
+                old_end_index = end_index;
+                end_index = find(cap_data{old_end_index + 1:end,2} > CAPACITIVE_THRESHOLD & ...
+                    cap_data{old_end_index + 1:end,1}  < gestures_data{index+1,5} & ...
+                     cap_data{old_end_index + 1:end,1}  >= (gestures_data{index,6}) ...
+                     , 1, 'first');
+                     % ifelse(~isempty(gestures_data{index,7}), cap_data{old_end_index + 1:end,1}  > (gestures_data{index,6}),1),...
+                end_index = old_end_index + end_index;
+            end
+
             if isempty(start_index)
                 break;
+            end
+            
+            if isempty(end_index)
+                fprintf('end index empty i: %d j: %d start index: %d\n', i, j, start_index);
             end
             
             gestures_data{index,8} = cap_data{start_index,1};
@@ -58,4 +62,5 @@ for i = 3 : 3 %NO_PARTICIPANTS
     end
 end
 
-save('gestures_data.mat', 'gestures_data');
+% save('gestures_data.mat', 'gestures_data');
+

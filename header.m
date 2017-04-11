@@ -1,14 +1,7 @@
 
 % header file with variables other files need
 
-% load('/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Analysis/capacitive_data.mat');
-% load('/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Analysis/car_data.mat');
-% load('/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Analysis/experiment_data.mat');
-% load('/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Analysis/gaze_data.mat');
-% load('/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Analysis/video_data.mat');
-load('gestures_data.mat');
-
-clearvars -except capacitive_data car_data experiment_data gaze_data video_data gestures
+clearvars -except capacitive_data car_data experiment_data gaze_data video_data gestures_data
 
 GESTURES = {'SWIPE LEFT 2'; 'SWIPE LEFT 3'; 'SWIPE LEFT 4';
     'SWIPE RIGHT 2'; 'SWIPE RIGHT 3'; 'SWIPE RIGHT 4';
@@ -30,7 +23,9 @@ blsq = ballatsq(NO_CONDITIONS);
 BLSQ = [blsq; blsq; blsq; blsq; blsq];
 
 CAPACITIVE_THRESHOLD = 500; % larger than 500 -> hand is back on steering wheel
+MIN_HAND_OFF_WHEEL_DURATION = 500;
 
 P3_3_END_INDEX = 6818;  % due to some glitch, the car data was recorded for 
                         % longer than the experiment lasted. This is hereby
                         % corrected. 
+                        

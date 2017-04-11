@@ -3,3 +3,4 @@ import_car_data;
 import_experiment_data;
 import_gaze_data;
 import_video_info;
+import_pilot_gaze_data;
