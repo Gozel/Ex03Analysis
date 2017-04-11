@@ -41,9 +41,8 @@ for i = 1 : NO_PARTICIPANTS
                 old_end_index = end_index;
                 end_index = find(cap_data{old_end_index + 1:end,2} > CAPACITIVE_THRESHOLD & ...
                     cap_data{old_end_index + 1:end,1}  < gestures_data{index+1,5} & ...
-                     cap_data{old_end_index + 1:end,1}  >= (gestures_data{index,6}) ...
+                     ifelse(~isempty(gestures_data{index,7}), cap_data{old_end_index + 1:end,1}  > (gestures_data{index,6}),1) ...
                      , 1, 'first');
-                     % ifelse(~isempty(gestures_data{index,7}), cap_data{old_end_index + 1:end,1}  > (gestures_data{index,6}),1),...
                 end_index = old_end_index + end_index;
             end
 
@@ -52,7 +51,11 @@ for i = 1 : NO_PARTICIPANTS
             end
             
             if isempty(end_index)
-                fprintf('end index empty i: %d j: %d start index: %d\n', i, j, start_index);
+                old_end_index = start_index;
+                end_index = find(cap_data{old_end_index + 1:end,2} < CAPACITIVE_THRESHOLD & ...
+                    cap_data{old_end_index + 1:end,1}  < gestures_data{index+1,5} ...
+                    , 1, 'last');
+                end_index = old_end_index + end_index;
             end
             
             gestures_data{index,8} = cap_data{start_index,1};
@@ -62,5 +65,5 @@ for i = 1 : NO_PARTICIPANTS
     end
 end
 
-% save('gestures_data.mat', 'gestures_data');
+save('gestures_data.mat', 'gestures_data');
 
