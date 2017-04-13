@@ -1,6 +1,7 @@
 header;
 
-lane_dev = zeros(NO_PARTICIPANTS + 2, NO_CONDITIONS);
+lane_dev_mean = zeros(NO_PARTICIPANTS, NO_CONDITIONS);
+lane_dev_rmse = zeros(NO_PARTICIPANTS + 2, NO_CONDITIONS);
 index = 1;
 end_index = 0;
 
@@ -43,20 +44,22 @@ for i = 1 : NO_PARTICIPANTS
 %             fprintf('not normally distributed for participant %d in condition %d with value: %f\n', i, j, k);
 %         end
         
-        % lane_dev(i,BLSQ(i,j)) = rmse(data{index:end_index,2}, zeros(size(data{index:end_index,2})));
-        lane_dev(i,BLSQ(i,j)) = rmse(clean_data(:), zeros(size(clean_data(:))));
+        lane_dev_mean(i,BLSQ(i,j)) = mean(clean_data(:));
+        lane_dev_rmse(i,BLSQ(i,j)) = rmse(clean_data(:), zeros(size(clean_data(:))));
         
     end
 end
 
-lane_dev(2,:) = [];
+lane_dev_mean(2,:) = [];
+lane_dev_rmse(2,:) = [];
 % one-by-one factor analysis: one dependent variable (lane dev) and one
 % independent variable (condition) with 4 factors
-[p, tbl, stats] = kruskalwallis(lane_dev, {'Visual', 'Auditory', 'Ambient', 'Tactile'}, 'off');
+[p, tbl, stats] = kruskalwallis(lane_dev_rmse, {'Visual', 'Auditory', 'Ambient', 'Tactile'}, 'off');
+fprintf('success rates of gestures. p: %f, chi^2(%d) = %f\n', p, tbl{2,3}, tbl{2,5});
 
 figure, 
 hold on,
-boxplot(lane_dev(1:end-2,:),{'Visual', 'Auditory', 'Ambient', 'Tactile'}),
+boxplot(lane_dev_rmse(1:end-3,:),{'Visual', 'Auditory', 'Ambient', 'Tactile'}),
 xlabel('Conditions'),
 ylabel('Lane deviation in metres'),
 title('Lane deviation across conditions'),
@@ -64,19 +67,19 @@ hold off;
 saveas(gca,'figures/lane_dev_across_conditions','epsc');
 
 % table of means and std of lane dev per condition
-lane_dev(NO_PARTICIPANTS, 1) = mean(lane_dev(:,1));
-lane_dev(NO_PARTICIPANTS + 1, 1) = std(lane_dev(:,1));
-lane_dev(NO_PARTICIPANTS, 2) = mean(lane_dev(:,2));
-lane_dev(NO_PARTICIPANTS + 1, 2) = std(lane_dev(:,2));
-lane_dev(NO_PARTICIPANTS, 3) = mean(lane_dev(:,3));
-lane_dev(NO_PARTICIPANTS + 1, 3) = std(lane_dev(:,3));
-lane_dev(NO_PARTICIPANTS, 4) = mean(lane_dev(:,4)); 
-lane_dev(NO_PARTICIPANTS + 1, 4) = std(lane_dev(:,4));
+lane_dev_rmse(NO_PARTICIPANTS, 1) = mean(lane_dev_rmse(:,1));
+lane_dev_rmse(NO_PARTICIPANTS + 1, 1) = std(lane_dev_rmse(:,1));
+lane_dev_rmse(NO_PARTICIPANTS, 2) = mean(lane_dev_rmse(:,2));
+lane_dev_rmse(NO_PARTICIPANTS + 1, 2) = std(lane_dev_rmse(:,2));
+lane_dev_rmse(NO_PARTICIPANTS, 3) = mean(lane_dev_rmse(:,3));
+lane_dev_rmse(NO_PARTICIPANTS + 1, 3) = std(lane_dev_rmse(:,3));
+lane_dev_rmse(NO_PARTICIPANTS, 4) = mean(lane_dev_rmse(:,4)); 
+lane_dev_rmse(NO_PARTICIPANTS + 1, 4) = std(lane_dev_rmse(:,4));
 
 row_labels = {'P1', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10', ...
     'P11', 'P12', 'P13', 'P14', 'P15', 'P16', 'P17', 'P18', 'P19', 'P20', '$\mu$', '$\sigma$'};
 column_labels = {'Visual', 'Auditory', 'Ambient', 'Tactile'};
-matrix2latex(lane_dev, 'tables/lane_dev_conditions_means_stds.tex', 'rowLabels', row_labels, ...
+matrix2latex(lane_dev_rmse, 'tables/lane_dev_conditions_means_stds.tex', 'rowLabels', row_labels, ...
     'columnLabels', column_labels, 'alignment', 'c', 'format', '%-6.2f', 'size', 'normalsize');
 
 

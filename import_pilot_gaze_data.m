@@ -176,7 +176,7 @@ pilot_gaze_data{5,1}(11641:11651,17) = {1};
 pilot_gaze_data{5,1}(11658:11711,17) = {1};
 pilot_gaze_data{5,1}(11795:12102,17) = {1};
 pilot_gaze_data{5,1}(12120:12271,17) = {1};
-%pilot_gaze_data{5,1}(12299:,17) = {1};
+pilot_gaze_data{5,1}(12299:,17) = {1};
 
 % import Euan Freeman #1
 fileName = '/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Data/Pilot/2017_02_23-09_49_29_Euan/webcamData_p1_0_p_gaze.txt';                

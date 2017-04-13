@@ -29,9 +29,18 @@ for i = 1 : NO_PARTICIPANTS
 
                 old_start_index = start_index;
                 start_index = find(cap_data{old_start_index + 1:end,2} <= CAPACITIVE_THRESHOLD & ...
-                cap_data{old_start_index + 1:end,1}  >= gestures_data{index,5}, 1, 'first');
+                cap_data{old_start_index + 1:end,1}  >= gestures_data{index,5} & ...
+                cap_data{old_start_index + 1:end,1}  < gestures_data{index,6}, 1, 'first');
 
                 start_index = old_start_index + start_index;
+            end
+            
+            if 1465 == index || 1466 == index
+                start_index = find(cap_data{old_start_index + 1:end,1}  >= gestures_data{index,5}, 1, 'first');
+            end
+            
+            if isempty(start_index)
+                break;
             end
 
             % find correct end index hand off wheel 
@@ -46,21 +55,13 @@ for i = 1 : NO_PARTICIPANTS
                 end_index = old_end_index + end_index;
             end
 
-            if isempty(start_index)
-                break;
-            end
-            
-            if isempty(end_index)
-                old_end_index = start_index;
-                end_index = find(cap_data{old_end_index + 1:end,2} < CAPACITIVE_THRESHOLD & ...
-                    cap_data{old_end_index + 1:end,1}  < gestures_data{index+1,5} ...
-                    , 1, 'last');
-                end_index = old_end_index + end_index;
-            end
-            
             gestures_data{index,8} = cap_data{start_index,1};
-            gestures_data{index,9} = cap_data{end_index,1} - cap_data{start_index,1};
+            gestures_data{index,9} = ifelse(~isempty(end_index) & start_index ~= end_index & ...
+                (cap_data{end_index,1} - cap_data{start_index,1}) <= (gestures_data{index, 6} - gestures_data{index,5}), ...
+                cap_data{end_index,1} - cap_data{start_index,1}, ...
+                gestures_data{index,6} - cap_data{start_index, 1} );
             index = index + 1;
+            
         end
     end
 end

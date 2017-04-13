@@ -54,10 +54,6 @@ for i = 1 : NO_PARTICIPANTS
                 gestures_data(index, :) = gesture;
             end
         end
-        
-        % after each condition, end of gestures is MAX the end of file
-        % time stamp
-        %gestures_data{index,6} = data{end,1};
     end
 end
 

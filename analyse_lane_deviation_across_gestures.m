@@ -1,35 +1,32 @@
 
 header;
-start_time = 0;
-end_time = 0;
 
-for i = 1 : length(gestures)
-   
-    lane_data = car_data{gestures{i,1},gestures{i,2}};
-    for j = 1 : height(lane_data)
+for i = 1 : NO_PARTICIPANTS
+    
+    % skipping participant 2 
+    if 2 == i
+        continue;
+    end
+    
+    for j = 1 : NO_CONDITIONS
+
+        lane_data = car_data{i, j};
         
-        if lane_data{j,1} >= gestures{i,6} - 50 ...
-                && lane_data{j,1} <= gestures{i,6} + 50 ...
-                && 0 == start_time
-            %fprintf('i %f j %f\n', i, j);
-            start_time = j;
-            break;
+        start_index = find(cell2mat(gestures_data(1:end-3,1)) == i ...
+            & cell2mat(gestures_data(1:end-3,2)) == BLSQ(i,j), 1, 'first');
+        end_index = find(cell2mat(gestures_data(1:end-3,1)) == i ...
+            & cell2mat(gestures_data(1:end-3,2)) == BLSQ(i,j), 1, 'last');
+        
+        for k = start_index : end_index
+        
+            frame_start = find(lane_data{:,1} >= gestures_data{k,8}, 1, 'first');
+            frame_end = find(lane_data{:,1} <= (gestures_data{k,8} + gestures_data{k,9}), 1, 'last');
+
+            clean_data = (lane_data{frame_start:frame_end,2});
+            
+            gestures_data{k,10} = rmse(clean_data(:), zeros(size(clean_data(:))));
         end
     end
-    
-    for j = start_time + 1 : height(lane_data)
-        if lane_data{j,1} >= (gestures{i,6} + gestures{i,7} - 50) ...
-                && lane_data{j,1} <= (gestures{i,6} + gestures{i,7} + 50) ...
-                && 0 == end_time
-            %fprintf('i %f j %f\n', i, j);
-            end_time = j;
-            break;
-        end
-    end
-    
-    fprintf('i %f j %f start index %f end index %f\n', i, j, start_time, end_time);
-    gestures(i,10) = {rmse(lane_data{start_time:end_time, 2}, zeros(end_time - start_time + 1, 1))};
-    %gestures(i,11) = {std(lane_data{start_time:end_time,2})};
-    start_time = 0;
-    end_time = 0;
 end
+
+save('gestures_data.mat', 'gestures_data');
