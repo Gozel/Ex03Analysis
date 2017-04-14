@@ -7,7 +7,7 @@ pilot_gaze_data = cell(6,1);
 fileName = '/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Data/Pilot/2017_02_21-11_23_59_Graham/webcamData_p1_0_p_gaze.txt';                
 formatSpec = '%f%f%f%f%f%f%f%f%f%f';
 pilot_gaze_data{1,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
-pilot_gaze_data{1,1} = {pilot_gaze_data{1,1}(:,:), zeros(length(pilot_gaze_data{1,1}{:,1}),1)};
+%pilot_gaze_data{1,1} = [pilot_gaze_data{1,1}(:,:), zeros(length(pilot_gaze_data{1,1}{:,1}),1)];
 
 % manually classify Graham Wilson #1 
 pilot_gaze_data{1,1}(1:85,11) = {1};
@@ -91,7 +91,7 @@ fileName = '/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Data/Pilot/20
 pilot_gaze_data{4,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
 
 % manually classify John Williamson #1
-pilot_gaze_data{4,1}(:,17) = {0};
+% pilot_gaze_data{4,1}(:,17) = {0};
 % pilot_gaze_data{4,1}(1:554,17) = {1};
 
 % import John Williamson #2
@@ -176,7 +176,32 @@ pilot_gaze_data{5,1}(11641:11651,17) = {1};
 pilot_gaze_data{5,1}(11658:11711,17) = {1};
 pilot_gaze_data{5,1}(11795:12102,17) = {1};
 pilot_gaze_data{5,1}(12120:12271,17) = {1};
-pilot_gaze_data{5,1}(12299:,17) = {1};
+pilot_gaze_data{5,1}(12299:12434,17) = {1};
+pilot_gaze_data{5,1}(12485:12650,17) = {1};
+pilot_gaze_data{5,1}(12668:12796,17) = {1};
+pilot_gaze_data{5,1}(12818:12881,17) = {1};
+pilot_gaze_data{5,1}(12905:13022,17) = {1};
+pilot_gaze_data{5,1}(13042:13472,17) = {1};
+pilot_gaze_data{5,1}(13491:13625,17) = {1};
+pilot_gaze_data{5,1}(13636:13810,17) = {1};
+pilot_gaze_data{5,1}(13820:14008,17) = {1};
+pilot_gaze_data{5,1}(14019:14057,17) = {1};
+pilot_gaze_data{5,1}(14078:14108,17) = {1};
+pilot_gaze_data{5,1}(14141:14213,17) = {1};
+pilot_gaze_data{5,1}(14235:14529,17) = {1};
+pilot_gaze_data{5,1}(14541:14950,17) = {1};
+pilot_gaze_data{5,1}(14958:15016,17) = {1};
+pilot_gaze_data{5,1}(15028:15082,17) = {1};
+pilot_gaze_data{5,1}(15103:15109,17) = {1};
+pilot_gaze_data{5,1}(15131:15157,17) = {1};
+pilot_gaze_data{5,1}(15165:15178,17) = {1};
+pilot_gaze_data{5,1}(15188:16410,17) = {1};
+pilot_gaze_data{5,1}(16437:16686,17) = {1};
+pilot_gaze_data{5,1}(16729:16739,17) = {1};
+pilot_gaze_data{5,1}(16749:16769,17) = {1};
+pilot_gaze_data{5,1}(16799:17935,17) = {1};
+pilot_gaze_data{5,1}(17947:18952,17) = {1};
+pilot_gaze_data{5,1}(18971:end,17) = {1};
 
 % import Euan Freeman #1
 fileName = '/home/gozel/OneDrive/PhD/Reports_Papers_Documents/Ex03/Data/Pilot/2017_02_23-09_49_29_Euan/webcamData_p1_0_p_gaze.txt';                
