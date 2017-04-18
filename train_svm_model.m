@@ -4,7 +4,7 @@ header;
 % test_data{1,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
 
 % manual classification
-training_data = vertcat(pilot_gaze_data{2}{:,:}, pilot_gaze_data{3}{:,:}, pilot_gaze_data{5}{:,:}); %, pilot_gaze_data{6}{:,:});
+training_data = vertcat(pilot_gaze_data{2}{:,:}, pilot_gaze_data{3}{:,:}, pilot_gaze_data{5}{:,:}, pilot_gaze_data{6}{:,:});
 c = cvpartition(length(training_data),'KFold',10);
 
 opts = struct('Optimizer','bayesopt','ShowPlots',true,'CVPartition',c,...
@@ -14,16 +14,11 @@ svmmod = fitcsvm(training_data(:,5:10), training_data(:,17),'KernelFunction','rb
 
 
 % train
-% svmStruct_left = svmtrain(training_data(:,8:10), training_data(:,17));
-% svmStruct_right = svmtrain(training_data(:,5:7), training_data(:,17));
-
-% svmStruct = svmtrain(training_data(:,5:10), training_data(:,17));
+% svmStruct = svmtrain(training_data(:,5:10), training_data(:,17), 'boxconstraint', ...
+    % 242.71, 'kernel_function', 'rbf', 'rbf_sigma', 0.1119) ;
 
 % test
-% newPoint_left = svmclassify(svmStruct_left, pilot_gaze_data{6}{557,5:7});
-% newPoint_right = svmclassify(svmStruct_right, pilot_gaze_data{6}{557,8:10});
-
-newPoint = svmclassify(svmStruct, pilot_gaze_data{6}{559,5:10});
+% newPoint = svmclassify(svmStruct, pilot_gaze_data{6}{559,5:10});
 
 % md1 = fitcknn(training_data(:,8:10), training_data(:,17));
 

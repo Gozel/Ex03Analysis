@@ -1,7 +1,7 @@
 
 % header file with variables other files need
 
-clearvars -except capacitive_data car_data experiment_data gaze_data video_data gestures_data pilot_gaze_data
+clearvars -except capacitive_data car_data experiment_data gaze_data video_data gestures_data pilot_gaze_data svmmod
 
 GESTURES = {'SWIPE LEFT 2'; 'SWIPE LEFT 3'; 'SWIPE LEFT 4';
     'SWIPE RIGHT 2'; 'SWIPE RIGHT 3'; 'SWIPE RIGHT 4';
