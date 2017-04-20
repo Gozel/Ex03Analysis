@@ -115,6 +115,7 @@ function matrix2latex(matrix, filename, varargin)
         fprintf(fid, '\\begin{%s}', textsize);
     end
 
+    fprintf(fid, '\\begin{table}\r\n');
     fprintf(fid, '\\begin{tabular}{|');
 
     if(~isempty(rowLabels))
@@ -148,6 +149,7 @@ function matrix2latex(matrix, filename, varargin)
     end
 
     fprintf(fid, '\\end{tabular}\r\n');
+    fprintf(fid, '\\end{table}\r\n');
     
     if(~isempty(textsize))
         fprintf(fid, '\\end{%s}', textsize);

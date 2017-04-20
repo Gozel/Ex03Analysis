@@ -7,15 +7,15 @@
 % [p, tbl, stats] = kruskalwallis(cell2mat(gestures_data(1:end-3,10)), string(gestures_data(1:end-3,3)), 'off');
 % fprintf('success rates of gestures. p: %f, chi^2(%d) = %f\n', p, tbl{2,3}, tbl{2,5});
 
-% figure, 
-% hold on,
-% boxplot(cell2mat(gestures_data(1:end-3,10)), string(gestures_data(1:end-3,3))),
-% xlabel('Gestures'),
-% ylabel('Lane deviation in metres'),
-% title('Lane deviation across gestures'),
-% xtickangle(45),
-% hold off;
-% saveas(gca,'figures/lane_dev_across_gestures','epsc');
+figure, 
+hold on,
+boxplot(cell2mat(gestures_data(1:end-3,10)), string(gestures_data(1:end-3,3))),
+xlabel('Gestures'),
+ylabel('Lane deviation in metres'),
+title('Lane deviation across gestures'),
+xtickangle(45),
+hold off;
+saveas(gca,'figures/lane_dev_across_gestures','epsc');
 
 % columns: gesture, mean lane dev, std lane dev, mean duration
 gesture_means = cell(length(GESTURES), 4);
@@ -34,12 +34,14 @@ errorbar(cell2mat(gesture_means(:,2)),cell2mat(gesture_means(:,3)),'o','MarkerSi
 xlabel('Gestures'),
 ylabel('Lane deviation means in metres'),
 title('Lane deviation means across gestures'),
-set(gca, 'XTickLabel', string(gesture_means(:,1))),
+set(gca, 'XTickLabel', GESTURES_SHORT),
+set(gca,'XLim',[0 15]),
+set(gca,'XTick',[1:1:14]),
 xtickangle(45),
 hold off;
 saveas(gca,'figures/lane_dev_means_across_gestures','epsc');
 
-row_labels = GESTURES;
+row_labels = GESTURES_SHORT;
 column_labels = {'Mean Lane Dev', 'Std Lane Dev', 'Duration in ms'};
 matrix2latex(cell2mat(gesture_means(:,2:end)), 'tables/lane_dev_gestures_means_stds.tex', ... 
     'rowLabels', row_labels, ...

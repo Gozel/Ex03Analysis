@@ -38,9 +38,14 @@ for i = 1 : NO_PARTICIPANTS
             gaze_end = l - 1;
             
             for l = gaze_start : gaze_end
-              gestures_data{k,11} = gestures_data{k,11} + ifelse(0 == gaze{l,17}, gaze{l+1,2} - gaze{l,2}, 0);  
+              gestures_data{k,11} = gestures_data{k,11} + ifelse(1 ~= gaze{l,17}, gaze{l+1,2} - gaze{l,2}, 0);  
+            end
+            
+            if 0.1 > gestures_data{k,11}
+                gestures_data{k,11} = 0;
             end
         end
+        fprintf('i: %d j: %d\n', i, j);
     end
 end
 
