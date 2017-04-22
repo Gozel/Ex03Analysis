@@ -4,13 +4,20 @@ header;
 % test_data{1,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
 
 % manual classification
-training_data = vertcat(pilot_gaze_data{2}{:,:}, pilot_gaze_data{3}{:,:}, pilot_gaze_data{5}{:,:}); %, pilot_gaze_data{6}{:,:});
+training_data = vertcat(pilot_gaze_data{2}{:,:}, pilot_gaze_data{3}{:,:}); %, pilot_gaze_data{5}{:,:}); %, pilot_gaze_data{6}{:,:});
 c = cvpartition(length(training_data),'KFold',10);
 
-% pd_r = makedist('Normal','mu',mean(training_data(:, [5,6])),'sigma',std(training_data(:,[5,6])));
+md1 = fitcknn(training_data(:,5:10), training_data(:,17), 'NumNeighbors',3, 'Distance', 'cityblock');
+
+md2 = fitcknn(training_data(:,5:10), training_data(:,17), 'NumNeighbors',8, 'Distance', 'cityblock', ...
+    'OptimizeHyperparameters','auto',...
+    'HyperparameterOptimizationOptions',...
+    struct('AcquisitionFunctionName','expected-improvement-plus'));
+
 
 % opts = struct('Optimizer','bayesopt','ShowPlots',true,'CVPartition',c,...
 %     'AcquisitionFunctionName','expected-improvement-plus');
+
 % svmmod_right = fitcsvm(training_data(:,5:7), training_data(:,17),'KernelFunction','rbf',...
 %     'OptimizeHyperparameters','auto','HyperparameterOptimizationOptions',opts)
 % 
@@ -20,18 +27,32 @@ c = cvpartition(length(training_data),'KFold',10);
 % test
 % newPoint = svmclassify(svmStruct, pilot_gaze_data{6}{559,5:10});
 
- x1 = pilot_gaze_data{5,1}{1:1139, 5};
- y1 = pilot_gaze_data{5,1}{1:1139 ,6};
+%  x1 = training_gaze_data{6}{:, 5};
+%  y1 = training_gaze_data{6}{: ,7};
+% 
+%  vi = convhull(x1,y1)
+%  polyarea(x1(vi),y1(vi))
+% 
+%  fill ( x1(vi), y1(vi), 'r' ); 
+%  hold on
+%  plot(x1,y1,'.')
+%  plot(gaze_data{6,3}{212,5}, gaze_data{6,3}{212,7}, '*')
+%  hold off
+%  
+%  x1 = training_gaze_data{6}{:, 8};
+%  y1 = training_gaze_data{6}{: ,9};
+% 
+%  vi = convhull(x1,y1)
+%  polyarea(x1(vi),y1(vi))
+% 
+%  figure,
+%  fill ( x1(vi), y1(vi), 'r' ); 
+%  hold on
+%  plot(x1,y1,'.')
+%  plot(gaze_data{6,3}{212,8}, gaze_data{6,3}{212,9}, '*')
+%  hold off
 
- vi = convhull(x1,y1)
- polyarea(x1(vi),y1(vi))
-
- fill ( x1(vi), y1(vi), 'r' ); 
- hold on
- plot(x1,y1,'.')
- hold off
-
-% [~,~,id] = unique(training_data(:,17));
+% [~,~,id] = unique(training_gaze_data(:,17));
 % colors = 'rgb';
 % markers = 'osd';
 % 
@@ -49,4 +70,3 @@ c = cvpartition(length(training_data),'KFold',10);
 %     hold on;
 % end
 % grid;
-
