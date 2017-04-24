@@ -1,8 +1,6 @@
 %header;
 
-gestures_data(:,11) = {0};
-
-for i = 1 : 5 %NO_PARTICIPANTS
+for i = 7 : NO_PARTICIPANTS
     
     % skipping participant 2 
     if 2 == i % || 5 == i

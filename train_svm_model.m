@@ -4,8 +4,8 @@
 % test_data{1,1} = readtable(fileName, 'Delimiter', ',', 'Format', formatSpec, 'TreatAsEmpty',{'-nan(ind)'});
 
 % manual classification
-training_data = vertcat(pilot_gaze_data{2}{:,:}, pilot_gaze_data{3}{:,:}, pilot_gaze_data{5}{:,:}, pilot_gaze_data{6}{:,:});
-% training_data = vertcat(pilot_gaze_data{2}{:,:}); %, pilot_gaze_data{5}{1:end/3,:}, pilot_gaze_data{6}{1:end/3,:});
+training_data = vertcat(pilot_gaze_data{2}{:,:}, pilot_gaze_data{3}{:,:}); %, pilot_gaze_data{5}{:,:}, pilot_gaze_data{6}{:,:});
+%training_data = vertcat(pilot_gaze_data{2}{:,:}); %, pilot_gaze_data{5}{1:end/3,:}, pilot_gaze_data{6}{1:end/3,:});
 c = cvpartition(length(training_data),'KFold',10);
 
 opts = struct('Optimizer','bayesopt','ShowPlots',true,'CVPartition',c,...
