@@ -1,4 +1,4 @@
-header;
+%header;
 
 index = 1;
 

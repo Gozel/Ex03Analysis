@@ -1,6 +1,8 @@
 %header;
 
-for i = 1 : NO_PARTICIPANTS
+%gaze_data{i,j}{:,17} = [0];
+
+for i = 1 : 5 %NO_PARTICIPANTS
     
     % skipping participant 2 
     if 2 == i %|| 5 == i
@@ -11,7 +13,7 @@ for i = 1 : NO_PARTICIPANTS
 
         for k = 1 : height(gaze_data{i,j})
             
-            gaze_data{i,j}{k,17} = predict(md2, gaze_data{i,j}{k,5:10});
+            gaze_data{i,j}{k,17} = predict(svmmod_pose_john, gaze_data{i,j}{k,[5:10 14:16]});
         end
         
         fprintf('i: %d j: %d\n', i, j);

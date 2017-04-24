@@ -1,8 +1,8 @@
-header;
+%header;
 
 gestures_data(:,11) = {0};
 
-for i = 1 : NO_PARTICIPANTS
+for i = 1 : 5 %NO_PARTICIPANTS
     
     % skipping participant 2 
     if 2 == i % || 5 == i
@@ -41,9 +41,9 @@ for i = 1 : NO_PARTICIPANTS
               gestures_data{k,11} = gestures_data{k,11} + ifelse(1 ~= gaze{l,17}, gaze{l+1,2} - gaze{l,2}, 0);  
             end
             
-            if 0.1 > gestures_data{k,11}
-                gestures_data{k,11} = 0;
-            end
+%             if 0.1 > gestures_data{k,11}
+%                 gestures_data{k,11} = 0;
+%             end
         end
         fprintf('i: %d j: %d\n', i, j);
     end
