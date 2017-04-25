@@ -25,11 +25,19 @@ for i = 1 : length(GESTURES)
     gesture_success_rates(i,:) = {GESTURES(i), sum(cell2mat(gestures_data(indeces,4))) / length(gestures_data(indeces,4)) * 100};
 end
 
+
+
+
 fontSize = 30;
 format compact
 
+[B, idx] = sort(string(gesture_success_rates(:,1)), 'ascend');
+%indeces = idx;
+%A = gestures_data(idx,:);
+
 x = 1 : length(GESTURES);
-y = gesture_success_rates;
+y = gesture_success_rates(idx,:);
+y(7,:) = [];
 numberOfBars = length(y);
 
 button = 3; %menu('Use which colormap?', 'Custom', 'Random', 'Jet', 'Hot', 'Lines');
@@ -59,7 +67,7 @@ else
 end
 
 % Plot each number one at a time, calling bar() for each y value.
-barFontSize = 15;
+barFontSize = 14;
 for b = 1 : numberOfBars
 	% Plot one single bar as a separate bar series.
 	handleToThisBarSeries(b) = bar(x(b), y{b,2}, 'BarWidth', 0.9);
@@ -79,7 +87,7 @@ xlabel('Gestures', 'FontSize', fontSize);
 ylabel('2nd Task Performance', 'FontSize', fontSize);
 % Restore the x tick marks.
 %set(gca, 'XTickMode', 'Auto');
-set(gca, 'XTickLabel', string(GESTURES_SHORT)),
+set(gca, 'XTickLabel', string(GESTURES_ALPHABET)),
 set(gca,'XLim',[0 15]),
 set(gca,'YLim',[0 110]),
 set(gca,'XTick',[1:1:14]),
@@ -94,33 +102,33 @@ saveas(gca,'figures/2nd_task_performance_gestures','epsc');
 % columns: 2nd task performance across gestures
 %gesture_success_rates_condition = cell(NO_CONDITIONS, 2, 3);
 
-for i = 1 : NO_CONDITIONS % length(GESTURES)
-    indeces = find(cell2mat(gestures_data(1:end-3,2)) == i);
-    gesture_success_rates_condition(i,:) = {CONDITIONS(i), sum(cell2mat(gestures_data(indeces,4))) / length(gestures_data(indeces,4)) * 100};
-end
-
-figure,
-hold on, 
-h = bar(cell2mat(gesture_success_rates_condition(:,end)), 'grouped'),
-xlabel('Conditions'),
-ylabel('Average Performance'),
-title('2nd Task Performance per Condition'),
-%xticklabels(measures),
-set(gca, 'XTickLabel', string(CONDITIONS)),
-set(gca,'XLim',[0 5]),
-set(gca,'YLim',[0 100]),
-set(gca,'XTick',[1:1:4]),
-hBarChildren = get(h, 'Children');
-set(hBarChildren, 'CData', [1 2 3 4]),
-colormap(jet(4)),
-%set(hBarChildren(2), 'FaceColor',colormap(summer(2))),
-%xtickangle(45),
-%legend(h, {'Ambient' 'Auditory' 'Tactile' 'Visual'});
-hold off;
-saveas(gca,'figures/2nd_task_performance_conditions','epsc');
-
-row_labels = CONDITIONS;
-column_labels = {'Gesture success rate'};
-matrix2latex(cell2mat(gesture_success_rates_condition(:,2:end)), 'tables/gesture_success_rates_across_conditions.tex', ... 
-    'rowLabels', row_labels, ...
-    'columnLabels', column_labels, 'alignment', 'c', 'format', '%-6.2f', 'size', 'normalsize');
+% for i = 1 : NO_CONDITIONS % length(GESTURES)
+%     indeces = find(cell2mat(gestures_data(1:end-3,2)) == i);
+%     gesture_success_rates_condition(i,:) = {CONDITIONS(i), sum(cell2mat(gestures_data(indeces,4))) / length(gestures_data(indeces,4)) * 100};
+% end
+% 
+% figure,
+% hold on, 
+% h = bar(cell2mat(gesture_success_rates_condition(:,end)), 'grouped'),
+% xlabel('Conditions'),
+% ylabel('Average Performance'),
+% title('2nd Task Performance per Condition'),
+% %xticklabels(measures),
+% set(gca, 'XTickLabel', string(CONDITIONS)),
+% set(gca,'XLim',[0 5]),
+% set(gca,'YLim',[0 100]),
+% set(gca,'XTick',[1:1:4]),
+% hBarChildren = get(h, 'Children');
+% set(hBarChildren, 'CData', [1 2 3 4]),
+% colormap(jet(4)),
+% %set(hBarChildren(2), 'FaceColor',colormap(summer(2))),
+% %xtickangle(45),
+% %legend(h, {'Ambient' 'Auditory' 'Tactile' 'Visual'});
+% hold off;
+% saveas(gca,'figures/2nd_task_performance_conditions','epsc');
+% 
+% row_labels = CONDITIONS;
+% column_labels = {'Gesture success rate'};
+% matrix2latex(cell2mat(gesture_success_rates_condition(:,2:end)), 'tables/gesture_success_rates_across_conditions.tex', ... 
+%     'rowLabels', row_labels, ...
+%     'columnLabels', column_labels, 'alignment', 'c', 'format', '%-6.2f', 'size', 'normalsize');

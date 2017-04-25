@@ -13,7 +13,7 @@ for i = 1 : NO_PARTICIPANTS
 
         for k = 1 : height(gaze_data{i,j})
             
-            gaze_data{i,j}{k,17} = and(gaze_data{i,j}{k,4} ,predict(svmmod_pose_john, gaze_data{i,j}{k,[5:10 14:16]}));
+            gaze_data{i,j}{k,17} = and(gaze_data{i,j}{k,4} ,predict(svmmod, gaze_data{i,j}{k,[5:10 14:16]}));
         end
         
         fprintf('i: %d j: %d\n', i, j);
