@@ -15,7 +15,8 @@ temp = [mean(tmp(1,1:18)) std(tmp(1,1:18)) mean(tmp(1,19:38)) std(tmp(1,19:38)) 
 
 figure,
 hold on, 
-h = bar(temp(:,[1,3,5,7]),'DisplayName','temp(:,[1,3,5,7])')
+grid on, 
+h = bar(temp(:,[7,3,1,5]),'DisplayName','temp(:,[1,3,5,7])')
 xlabel('NASA TLX Measures'),
 ylabel('Average Rating'),
 title('NASA TLX Results'),
@@ -26,7 +27,7 @@ set(gca,'YLim',[0 10]),
 set(gca,'XTick',[1:1:6]),
 colormap(jet(4))
 xtickangle(45),
-legend(h, {'Ambient' 'Auditory' 'Tactile' 'Visual'});
+legend(h, {'Visual' 'Auditory' 'Ambient' 'Tactile'});
 hold off;
 saveas(gca,'figures/nasatlx_results','epsc');
 

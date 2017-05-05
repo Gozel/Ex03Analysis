@@ -70,4 +70,29 @@ xtickangle(45),
 hold off;
 saveas(gca,'figures/gestures_duration_across_conditions','epsc');
 
+%% difference between the gestures SL / SR and Swipes and Circles etc?
+
+for i = 1 : length(GESTURES)
+    indeces = find(strcmp(string(gestures_data(1:end-3,3)), GESTURES{i}));
+    gesture_success_rates(i,:) = {GESTURES(i), sum(cell2mat(gestures_data(indeces,4))) / length(gestures_data(indeces,4)) * 100};
+end
+
+gesture_success_rates(7:8,:) = [];
+
+% one-by-one factor analysis: one dependent variable (gesture duration) and one
+% independent variable (gesture) with 13 factors
+[p, tbl, stats] = kruskalwallis([gesture_success_rates{:,2}], [1 1 1 2 2 2 3 3 3 4 4 4], 'off');
+fprintf('success rates of gestures. p: %f, chi^2(%d) = %f\n', p, tbl{2,3}, tbl{2,5});
+
+figure, 
+hold on,
+boxplot([gesture_success_rates{:,2}], [1 1 1 2 2 2 3 3 3 4 4 4]),
+xlabel('Gestures'),
+ylabel('Success Rate in %'),
+title('Success Rate of Gesture Types across Conditions'),
+set(gca, 'XTickLabel', {'SL' 'SR' 'CC' 'CCC'}),
+% xtickangle(45),
+hold off;
+saveas(gca,'figures/gestures_swipe_circle_comparison','epsc');
+
 

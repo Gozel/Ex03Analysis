@@ -1,6 +1,8 @@
-%header;
 
-for i = 7 : NO_PARTICIPANTS
+% analyse gaze data for short vs long glances and number of glances
+
+
+for i = 1 : NO_PARTICIPANTS
     
     % skipping participant 2 
     if 2 == i % || 5 == i
@@ -36,15 +38,12 @@ for i = 7 : NO_PARTICIPANTS
             gaze_end = l - 1;
             
             for l = gaze_start : gaze_end
+                
+                
               gestures_data{k,11} = gestures_data{k,11} + ifelse(1 ~= gaze{l,17}, gaze{l+1,2} - gaze{l,2}, 0);  
             end
             
-%             if 0.1 > gestures_data{k,11}
-%                 gestures_data{k,11} = 0;
-%             end
         end
         fprintf('i: %d j: %d\n', i, j);
     end
 end
-
-save('gestures_data.mat', 'gestures_data');

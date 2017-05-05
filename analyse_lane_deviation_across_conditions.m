@@ -57,8 +57,16 @@ lane_dev_rmse(2,:) = [];
 [p, tbl, stats] = kruskalwallis(lane_dev_rmse, {'Visual', 'Auditory', 'Ambient', 'Tactile'}, 'off');
 fprintf('success rates of gestures. p: %f, chi^2(%d) = %f\n', p, tbl{2,3}, tbl{2,5});
 
+% one-by-one factor analysis: one dependent variable (lane dev) and one
+% independent variable (condition) with 4 factors
+lane_dev_rmse_visual_nonvisual(:,1) = mean(lane_dev_rmse(1:end-3,[1 3]));
+lane_dev_rmse_visual_nonvisual(:,2) = mean(lane_dev_rmse(1:end-3,[2 4]));
+[p, tbl, stats] = kruskalwallis(lane_dev_rmse_visual_nonvisual, {'Visual', 'Non-Visual'}, 'off');
+fprintf('visual vs non-vsual. p: %f, chi^2(%d) = %f\n', p, tbl{2,3}, tbl{2,5});
+
 figure, 
 hold on,
+grid on,
 boxplot(lane_dev_rmse(1:end-3,:),{'Visual', 'Auditory', 'Ambient', 'Tactile'}),
 xlabel('Conditions'),
 ylabel('Lane deviation in metres'),

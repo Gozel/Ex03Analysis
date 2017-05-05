@@ -48,6 +48,7 @@ gaze_per_ges_per_con(7,:) = [];
 
 figure, 
 hold on, 
+grid on,
 bar(gaze_per_ges_per_con)
 xlabel('Gestures grouped by conditions'),
 ylabel('Lane deviation in metres'),
@@ -78,6 +79,7 @@ A = gestures_data(idx,:);
 
 figure, 
 hold on,
+grid on,
 boxplot(cell2mat(A(1:end-3,10)), string(A(1:end-3,3))),
 xlabel('Gestures'),
 ylabel('Lane deviation in metres'),
@@ -100,6 +102,7 @@ end
 
 figure, 
 hold on,
+grid on,
 errorbar(cell2mat(gesture_means(:,2)),cell2mat(gesture_means(:,3)),'o','MarkerSize',10,...
     'MarkerEdgeColor','red','MarkerFaceColor','red'),
 xlabel('Gestures'),

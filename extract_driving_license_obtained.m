@@ -10,9 +10,9 @@ for i = 1 : height(NASATLX)
     for k = start_index : end_index
 
         if strcmp(string(NASATLX{i,6}), 'UK')
-            gestures_data{k,12} = 1;
+            gestures_data{k,13} = 1;
         else 
-            gestures_data{k,12} = 0;
+            gestures_data{k,13} = 0;
         end
     end
 
